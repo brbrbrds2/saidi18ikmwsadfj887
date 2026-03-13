@@ -57,36 +57,57 @@ if getcustomasset then
     end
     
     -- Load Russia Flag
-    pcall(function()
-        if not isfile(dir..'/'..'russian_flag.png') then
-            print("[RUSWARE] Downloading Russia flag...")
-            local byte = game:HttpGet(string.format(link, 'russian_flag.png'))
-            writefile(dir..'/'..'russian_flag.png', byte)
-            print("[RUSWARE] Russia flag downloaded!")
-            task.wait()
-        end
+    local flagSuccess, flagError = pcall(function()
+        local flagPath = dir..'/'..'russian_flag.png'
         
-        if isfile(dir..'/'..'russian_flag.png') then
-            RUSWARE.FlagImage = getcustomasset(dir..'/'..'russian_flag.png')
-            print("[RUSWARE] Russia flag loaded:", RUSWARE.FlagImage)
+        -- Always try to download fresh version
+        print("[RUSWARE] Downloading Russia flag...")
+        local byte = game:HttpGet(string.format(link, 'russian_flag.png'))
+        
+        if byte and #byte > 0 then
+            writefile(flagPath, byte)
+            print("[RUSWARE] Russia flag downloaded! Size:", #byte)
+            task.wait(0.1)
+            
+            if isfile(flagPath) then
+                RUSWARE.FlagImage = getcustomasset(flagPath)
+                print("[RUSWARE] Russia flag loaded:", RUSWARE.FlagImage)
+            else
+                warn("[RUSWARE] Flag file not found after write!")
+            end
+        else
+            warn("[RUSWARE] Flag download returned empty data!")
         end
     end)
     
+    if not flagSuccess then
+        warn("[RUSWARE] Flag loading error:", flagError)
+    end
+    
     -- Load Logo
-    pcall(function()
-        if not isfile(dir..'/'..'logo.png') then
+    local logoSuccess, logoError = pcall(function()
+        local logoPath = dir..'/'..'logo.png'
+        
+        if not isfile(logoPath) then
             print("[RUSWARE] Downloading logo...")
             local byte = game:HttpGet(string.format(link, 'logo.png'))
-            writefile(dir..'/'..'logo.png', byte)
-            print("[RUSWARE] Logo downloaded!")
-            task.wait()
+            
+            if byte and #byte > 0 then
+                writefile(logoPath, byte)
+                print("[RUSWARE] Logo downloaded! Size:", #byte)
+                task.wait(0.1)
+            end
         end
         
-        if isfile(dir..'/'..'logo.png') then
-            RUSWARE.LogoImage = getcustomasset(dir..'/'..'logo.png')
+        if isfile(logoPath) then
+            RUSWARE.LogoImage = getcustomasset(logoPath)
             print("[RUSWARE] Logo loaded:", RUSWARE.LogoImage)
         end
     end)
+    
+    if not logoSuccess then
+        warn("[RUSWARE] Logo loading error:", logoError)
+    end
 else
     print("[RUSWARE] getcustomasset not available, using fallback graphics")
 end
@@ -269,7 +290,7 @@ function RUSWARE:CreateWindow(Config)
     FlagContainer.Size = UDim2.new(1, 0, 1, 0)
     FlagContainer.ZIndex = 1
     
-    -- Real American Flag Image
+    -- Real Russian Flag Image
     local FlagImage = Instance.new("ImageLabel")
     FlagImage.Name = "FlagImage"
     FlagImage.Parent = FlagContainer
@@ -280,9 +301,14 @@ function RUSWARE:CreateWindow(Config)
     FlagImage.ImageTransparency = 0.92
     FlagImage.ScaleType = Enum.ScaleType.Crop
     
+    print("[RUSWARE] Flag image set to:", RUSWARE.FlagImage)
+    
     -- Only show stripes if image failed to load
     if RUSWARE.FlagImage == "rbxassetid://0" or RUSWARE.FlagImage == "" then
+        print("[RUSWARE] Using fallback Russian stripes")
         FlagImage.Visible = false
+    else
+        print("[RUSWARE] Using loaded flag image")
     end
     
     -- Create Russian Flag Stripes (White-Blue-Red)
