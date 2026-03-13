@@ -864,7 +864,21 @@ function USWARE:CreateWindow(Config)
         
         -- Auto-select first tab
         if #Window.Tabs == 1 then
-            TabButton.MouseButton1Click:Fire()
+            task.spawn(function()
+                task.wait(0.1)
+                -- Manually trigger the click logic
+                for _, tab in pairs(Window.Tabs) do
+                    USWARE:PlayAnimate(tab.Button, SlowyTween, {BackgroundTransparency = 0.350})
+                    USWARE:PlayAnimate(tab.IconLabel, SlowyTween, {TextTransparency = 0.350})
+                    USWARE:PlayAnimate(tab.NameLabel, SlowyTween, {TextTransparency = 0.350})
+                    tab.Content.Visible = false
+                end
+                
+                USWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.150})
+                USWARE:PlayAnimate(TabIconLabel, SlowyTween, {TextTransparency = 0})
+                USWARE:PlayAnimate(TabNameLabel, SlowyTween, {TextTransparency = 0})
+                TabContent.Visible = true
+            end)
         end
         
         -- Section Creation
