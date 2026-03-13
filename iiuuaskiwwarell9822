@@ -6,15 +6,19 @@
 
 local USWARE = {}
 
+-- Compatibility
+local cloneref = cloneref or function(obj) return obj end
+local gethui = gethui or function() return game:GetService("CoreGui") end
+
 -- Services
-local TweenService = game:GetService('TweenService')
-local UserInputService = game:GetService('UserInputService')
-local TextService = game:GetService('TextService')
-local RunService = game:GetService('RunService')
-local Players = game:GetService('Players')
-local HttpService = game:GetService('HttpService')
+local TweenService = cloneref(game:GetService('TweenService'))
+local UserInputService = cloneref(game:GetService('UserInputService'))
+local TextService = cloneref(game:GetService('TextService'))
+local RunService = cloneref(game:GetService('RunService'))
+local Players = cloneref(game:GetService('Players'))
+local HttpService = cloneref(game:GetService('HttpService'))
 local LocalPlayer = Players.LocalPlayer
-local CoreGui = game:FindFirstChild('CoreGui') or LocalPlayer.PlayerGui
+local CoreGui = gethui()
 local Mouse = LocalPlayer:GetMouse()
 
 -- Global Variables
@@ -23,7 +27,12 @@ USWARE.Flags = {}
 USWARE.AccentColor = Color3.fromRGB(178, 34, 52) -- American Red
 USWARE.MainColor = Color3.fromRGB(8, 8, 13)
 USWARE.IconColor = Color3.fromRGB(255, 255, 255)
-USWARE.UserProfile = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+
+-- Safe user profile loading
+local success, userProfile = pcall(function()
+    return Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+end)
+USWARE.UserProfile = success and userProfile or ""
 
 -- Create ScreenGui
 local ScreenGui = Instance.new('ScreenGui')
