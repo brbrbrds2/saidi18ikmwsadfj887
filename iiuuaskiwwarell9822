@@ -37,6 +37,8 @@ USWARE.Flags = {}
 USWARE.AccentColor = Color3.fromRGB(178, 34, 52) -- American Red
 USWARE.MainColor = Color3.fromRGB(8, 8, 13)
 USWARE.IconColor = Color3.fromRGB(255, 255, 255)
+USWARE.FlagImage = "https://raw.githubusercontent.com/brbrbrds2/saidi18ikmwsadfj887/main/assets/usaflag.png"
+USWARE.LogoImage = "https://raw.githubusercontent.com/brbrbrds2/saidi18ikmwsadfj887/main/assets/logo.png"
 
 -- Safe user profile loading
 local success, userProfile = pcall(function()
@@ -215,6 +217,27 @@ function USWARE:CreateWindow(Config)
     FlagContainer.Size = UDim2.new(1, 0, 1, 0)
     FlagContainer.ZIndex = 1
     
+    -- Real American Flag Image
+    local FlagImage = Instance.new("ImageLabel")
+    FlagImage.Name = "FlagImage"
+    FlagImage.Parent = FlagContainer
+    FlagImage.BackgroundTransparency = 1
+    FlagImage.Size = UDim2.new(1, 0, 1, 0)
+    FlagImage.ZIndex = 1
+    FlagImage.Image = USWARE.FlagImage
+    FlagImage.ImageTransparency = 0.92
+    FlagImage.ScaleType = Enum.ScaleType.Crop
+    
+    -- Fallback stripes if image doesn't load
+    local useStripes = false
+    task.spawn(function()
+        task.wait(2)
+        if FlagImage.Image == "" or not FlagImage.IsLoaded then
+            useStripes = true
+            FlagImage.Visible = false
+        end
+    end)
+    
     -- Create 13 Stripes
     for i = 1, 13 do
         local Stripe = Instance.new("Frame")
@@ -267,21 +290,38 @@ function USWARE:CreateWindow(Config)
     HeadFrame.Size = UDim2.new(1, 0, 0, 50)
     HeadFrame.ZIndex = 7
     
-    -- Logo (USA Flag Icon)
+    -- Logo (Real Logo Image)
+    local LogoImage = Instance.new("ImageLabel")
+    LogoImage.Name = "Logo"
+    LogoImage.Parent = HeadFrame
+    LogoImage.AnchorPoint = Vector2.new(0, 0.5)
+    LogoImage.BackgroundTransparency = 1
+    LogoImage.Position = UDim2.new(0, 10, 0.5, 0)
+    LogoImage.Size = UDim2.new(0, 35, 0, 35)
+    LogoImage.ZIndex = 7
+    LogoImage.Image = USWARE.LogoImage
+    LogoImage.ScaleType = Enum.ScaleType.Fit
+    
+    local LogoCorner = Instance.new("UICorner")
+    LogoCorner.CornerRadius = UDim.new(0, 7)
+    LogoCorner.Parent = LogoImage
+    
+    -- Fallback to mini flag if logo doesn't load
     local LogoFrame = Instance.new("Frame")
-    LogoFrame.Name = "Logo"
+    LogoFrame.Name = "LogoFallback"
     LogoFrame.Parent = HeadFrame
     LogoFrame.AnchorPoint = Vector2.new(0, 0.5)
     LogoFrame.BackgroundColor3 = Color3.fromRGB(60, 59, 110)
     LogoFrame.Position = UDim2.new(0, 10, 0.5, 0)
     LogoFrame.Size = UDim2.new(0, 35, 0, 35)
-    LogoFrame.ZIndex = 7
+    LogoFrame.ZIndex = 6
+    LogoFrame.Visible = false
     
-    local LogoCorner = Instance.new("UICorner")
-    LogoCorner.CornerRadius = UDim.new(0, 7)
-    LogoCorner.Parent = LogoFrame
+    local LogoFrameCorner = Instance.new("UICorner")
+    LogoFrameCorner.CornerRadius = UDim.new(0, 7)
+    LogoFrameCorner.Parent = LogoFrame
     
-    -- Mini flag in logo
+    -- Mini flag stripes for fallback logo
     for i = 1, 5 do
         local MiniStripe = Instance.new("Frame")
         MiniStripe.Parent = LogoFrame
@@ -295,6 +335,14 @@ function USWARE:CreateWindow(Config)
             MiniStripe.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         end
     end
+    
+    -- Check if logo loaded, show fallback if not
+    task.spawn(function()
+        task.wait(2)
+        if LogoImage.Image == "" or not LogoImage.IsLoaded then
+            LogoFrame.Visible = true
+        end
+    end)
     
     -- Window Name
     local WindowName = Instance.new("TextLabel")
@@ -591,6 +639,7 @@ function USWARE:CreateWindow(Config)
                 BackgroundTransparency = 0.055,
                 Size = Window.Size
             })
+            USWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 0})
             USWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 0})
             USWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 0.350})
             USWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 0.650})
@@ -614,6 +663,7 @@ function USWARE:CreateWindow(Config)
                 BackgroundTransparency = 1,
                 Size = Window.Size + UDim2.fromOffset(-15, -15)
             })
+            USWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 1})
             USWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 1})
             USWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 1})
             USWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 1})
