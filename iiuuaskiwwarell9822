@@ -1,5 +1,5 @@
 --[[
-    USWARE - American Style UI Library for Roblox
+    RUSWARE - Russian Style UI Library for Roblox
     Based on NeverLose UI Structure
     Press DELETE to toggle
 ]]
@@ -16,7 +16,7 @@ local makefolder = makefolder or function() end
 local isfolder = isfolder or function() return false end
 local isfile = isfile or function() return false end
 
-local USWARE = {}
+local RUSWARE = {}
 
 -- Services
 local TweenService = game:GetService('TweenService')
@@ -38,74 +38,74 @@ if not CoreGui then
 end
 
 -- Global Variables
-USWARE.GlobalSignals = {}
-USWARE.Flags = {}
-USWARE.AccentColor = Color3.fromRGB(178, 34, 52) -- American Red
-USWARE.MainColor = Color3.fromRGB(8, 8, 13)
-USWARE.IconColor = Color3.fromRGB(255, 255, 255)
-USWARE.FlagImage = "rbxassetid://0" -- Fallback
-USWARE.LogoImage = "rbxassetid://0" -- Fallback
+RUSWARE.GlobalSignals = {}
+RUSWARE.Flags = {}
+RUSWARE.AccentColor = Color3.fromRGB(213, 43, 30) -- Russian Red
+RUSWARE.MainColor = Color3.fromRGB(8, 8, 13)
+RUSWARE.IconColor = Color3.fromRGB(255, 255, 255)
+RUSWARE.FlagImage = "rbxassetid://0" -- Fallback
+RUSWARE.LogoImage = "rbxassetid://0" -- Fallback
 
 -- Load images from GitHub
 if getcustomasset then
     local link = "https://raw.githubusercontent.com/brbrbrds2/saidi18ikmwsadfj887/main/assets/%s"
-    local dir = 'USWAREAssets'
+    local dir = 'RUSWAREAssets'
     
     if not isfolder(dir) then
         makefolder(dir)
-        print("[USWARE] Created assets folder")
+        print("[RUSWARE] Created assets folder")
     end
     
-    -- Load USA Flag
+    -- Load Russia Flag
     pcall(function()
-        if not isfile(dir..'/'..'usaflag.png') then
-            print("[USWARE] Downloading USA flag...")
-            local byte = game:HttpGet(string.format(link, 'usaflag.png'))
-            writefile(dir..'/'..'usaflag.png', byte)
-            print("[USWARE] USA flag downloaded!")
+        if not isfile(dir..'/'..'russian_flag.png') then
+            print("[RUSWARE] Downloading Russia flag...")
+            local byte = game:HttpGet(string.format(link, 'russian_flag.png'))
+            writefile(dir..'/'..'russian_flag.png', byte)
+            print("[RUSWARE] Russia flag downloaded!")
             task.wait()
         end
         
-        if isfile(dir..'/'..'usaflag.png') then
-            USWARE.FlagImage = getcustomasset(dir..'/'..'usaflag.png')
-            print("[USWARE] USA flag loaded:", USWARE.FlagImage)
+        if isfile(dir..'/'..'russian_flag.png') then
+            RUSWARE.FlagImage = getcustomasset(dir..'/'..'russian_flag.png')
+            print("[RUSWARE] Russia flag loaded:", RUSWARE.FlagImage)
         end
     end)
     
     -- Load Logo
     pcall(function()
         if not isfile(dir..'/'..'logo.png') then
-            print("[USWARE] Downloading logo...")
+            print("[RUSWARE] Downloading logo...")
             local byte = game:HttpGet(string.format(link, 'logo.png'))
             writefile(dir..'/'..'logo.png', byte)
-            print("[USWARE] Logo downloaded!")
+            print("[RUSWARE] Logo downloaded!")
             task.wait()
         end
         
         if isfile(dir..'/'..'logo.png') then
-            USWARE.LogoImage = getcustomasset(dir..'/'..'logo.png')
-            print("[USWARE] Logo loaded:", USWARE.LogoImage)
+            RUSWARE.LogoImage = getcustomasset(dir..'/'..'logo.png')
+            print("[RUSWARE] Logo loaded:", RUSWARE.LogoImage)
         end
     end)
 else
-    print("[USWARE] getcustomasset not available, using fallback graphics")
+    print("[RUSWARE] getcustomasset not available, using fallback graphics")
 end
 
 -- Safe user profile loading
 local success, userProfile = pcall(function()
     return Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
 end)
-USWARE.UserProfile = success and userProfile or ""
+RUSWARE.UserProfile = success and userProfile or ""
 
 -- Create ScreenGui
 local ScreenGui = Instance.new('ScreenGui')
-ScreenGui.Name = "USWARE_" .. tostring(math.random(1000, 9999))
+ScreenGui.Name = "RUSWARE_" .. tostring(math.random(1000, 9999))
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = CoreGui
 
-USWARE.ScreenGui = ScreenGui
+RUSWARE.ScreenGui = ScreenGui
 
 -- Tween Info
 local ManualTween = TweenInfo.new(0.1)
@@ -114,12 +114,12 @@ local FastTween = TweenInfo.new(0.05)
 local VSlowTween = TweenInfo.new(0.5, Enum.EasingStyle.Quint)
 
 -- Helper Functions
-function USWARE:AddSignal(RBXSignal)
-    table.insert(USWARE.GlobalSignals, RBXSignal)
+function RUSWARE:AddSignal(RBXSignal)
+    table.insert(RUSWARE.GlobalSignals, RBXSignal)
     return RBXSignal
 end
 
-function USWARE:CreateSignal(DefaultValue)
+function RUSWARE:CreateSignal(DefaultValue)
     local cache = Instance.new('BindableEvent')
     local bind = {
         Value = DefaultValue,
@@ -138,20 +138,20 @@ function USWARE:CreateSignal(DefaultValue)
     
     function bind:Connect(f)
         local signal = cache.Event:Connect(f)
-        USWARE:AddSignal(signal)
+        RUSWARE:AddSignal(signal)
         return signal
     end
     
     return bind
 end
 
-function USWARE:PlayAnimate(Self, Info, Property)
+function RUSWARE:PlayAnimate(Self, Info, Property)
     local Tween = TweenService:Create(Self, Info or TweenInfo.new(0.25), Property)
     Tween:Play()
     return Tween
 end
 
-function USWARE:Drag(InputFrame, MoveFrame, Speed)
+function RUSWARE:Drag(InputFrame, MoveFrame, Speed)
     local dragToggle = false
     local dragStart = nil
     local startPos = nil
@@ -161,10 +161,10 @@ function USWARE:Drag(InputFrame, MoveFrame, Speed)
         local delta = input.Position - dragStart
         local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
             startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        USWARE:PlayAnimate(MoveFrame, Tween, {Position = position})
+        RUSWARE:PlayAnimate(MoveFrame, Tween, {Position = position})
     end
     
-    USWARE:AddSignal(InputFrame.InputBegan:Connect(function(input)
+    RUSWARE:AddSignal(InputFrame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then 
             dragToggle = true
             dragStart = input.Position
@@ -180,7 +180,7 @@ function USWARE:Drag(InputFrame, MoveFrame, Speed)
         end
     end))
     
-    USWARE:AddSignal(UserInputService.InputChanged:Connect(function(input)
+    RUSWARE:AddSignal(UserInputService.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             if dragToggle then
                 updateInput(input)
@@ -189,7 +189,7 @@ function USWARE:Drag(InputFrame, MoveFrame, Speed)
     end))
 end
 
-function USWARE:CreateShadow(parent)
+function RUSWARE:CreateShadow(parent)
     local Shadow = {}
     
     local UIShadow1 = Instance.new("UIStroke")
@@ -215,15 +215,15 @@ function USWARE:CreateShadow(parent)
     
     Shadow.Render = function(self, value)
         if value then
-            USWARE:PlayAnimate(UIShadow1, SlowyTween, {Transparency = 0.900})
-            USWARE:PlayAnimate(UIShadow2, SlowyTween, {Transparency = 0.900})
-            USWARE:PlayAnimate(UIShadow3, SlowyTween, {Transparency = 0.900})
-            USWARE:PlayAnimate(UIShadow4, SlowyTween, {Transparency = 0.900})
+            RUSWARE:PlayAnimate(UIShadow1, SlowyTween, {Transparency = 0.900})
+            RUSWARE:PlayAnimate(UIShadow2, SlowyTween, {Transparency = 0.900})
+            RUSWARE:PlayAnimate(UIShadow3, SlowyTween, {Transparency = 0.900})
+            RUSWARE:PlayAnimate(UIShadow4, SlowyTween, {Transparency = 0.900})
         else
-            USWARE:PlayAnimate(UIShadow1, SlowyTween, {Transparency = 1})
-            USWARE:PlayAnimate(UIShadow2, SlowyTween, {Transparency = 1})
-            USWARE:PlayAnimate(UIShadow3, SlowyTween, {Transparency = 1})
-            USWARE:PlayAnimate(UIShadow4, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(UIShadow1, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(UIShadow2, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(UIShadow3, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(UIShadow4, SlowyTween, {Transparency = 1})
         end
     end
     
@@ -231,14 +231,14 @@ function USWARE:CreateShadow(parent)
 end
 
 -- Main Window Creation
-function USWARE:CreateWindow(Config)
+function RUSWARE:CreateWindow(Config)
     Config = Config or {}
     
     local Window = {
-        Name = Config.Name or "USWARE",
-        Content = Config.Content or "AMERICAN EDITION",
+        Name = Config.Name or "RUSWARE",
+        Content = Config.Content or "RUSSIAN EDITION",
         Size = Config.Size or UDim2.new(0, 640, 0, 480),
-        Signal = USWARE:CreateSignal(true),
+        Signal = RUSWARE:CreateSignal(true),
         Tabs = {},
         CurrentTab = 1,
         Keybind = Config.Keybind or Enum.KeyCode.Delete
@@ -248,10 +248,10 @@ function USWARE:CreateWindow(Config)
     local WindowFrame = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     
-    WindowFrame.Name = "USWARE_Main"
-    WindowFrame.Parent = USWARE.ScreenGui
+    WindowFrame.Name = "RUSWARE_Main"
+    WindowFrame.Parent = RUSWARE.ScreenGui
     WindowFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    WindowFrame.BackgroundColor3 = USWARE.MainColor
+    WindowFrame.BackgroundColor3 = RUSWARE.MainColor
     WindowFrame.BackgroundTransparency = 0.055
     WindowFrame.BorderSizePixel = 0
     WindowFrame.ClipsDescendants = true
@@ -276,12 +276,12 @@ function USWARE:CreateWindow(Config)
     FlagImage.BackgroundTransparency = 1
     FlagImage.Size = UDim2.new(1, 0, 1, 0)
     FlagImage.ZIndex = 1
-    FlagImage.Image = USWARE.FlagImage
+    FlagImage.Image = RUSWARE.FlagImage
     FlagImage.ImageTransparency = 0.92
     FlagImage.ScaleType = Enum.ScaleType.Crop
     
     -- Only show stripes if image failed to load
-    if USWARE.FlagImage == "rbxassetid://0" or USWARE.FlagImage == "" then
+    if RUSWARE.FlagImage == "rbxassetid://0" or RUSWARE.FlagImage == "" then
         FlagImage.Visible = false
     end
     
@@ -320,7 +320,7 @@ function USWARE:CreateWindow(Config)
     DragFrame.BackgroundTransparency = 1
     DragFrame.Size = UDim2.new(1, 0, 0, 50)
     DragFrame.ZIndex = 7
-    USWARE:Drag(DragFrame, WindowFrame, 0.15)
+    RUSWARE:Drag(DragFrame, WindowFrame, 0.15)
     
     -- Left Menu Frame
     local LeftMenuFrame = Instance.new("Frame")
@@ -346,7 +346,7 @@ function USWARE:CreateWindow(Config)
     LogoImage.Position = UDim2.new(0, 10, 0.5, 0)
     LogoImage.Size = UDim2.new(0, 35, 0, 35)
     LogoImage.ZIndex = 7
-    LogoImage.Image = USWARE.LogoImage
+    LogoImage.Image = RUSWARE.LogoImage
     LogoImage.ScaleType = Enum.ScaleType.Fit
     
     local LogoCorner = Instance.new("UICorner")
@@ -362,7 +362,7 @@ function USWARE:CreateWindow(Config)
     LogoFrame.Position = UDim2.new(0, 10, 0.5, 0)
     LogoFrame.Size = UDim2.new(0, 35, 0, 35)
     LogoFrame.ZIndex = 6
-    LogoFrame.Visible = (USWARE.LogoImage == "rbxassetid://0" or USWARE.LogoImage == "")
+    LogoFrame.Visible = (RUSWARE.LogoImage == "rbxassetid://0" or RUSWARE.LogoImage == "")
     
     local LogoFrameCorner = Instance.new("UICorner")
     LogoFrameCorner.CornerRadius = UDim.new(0, 7)
@@ -407,7 +407,7 @@ function USWARE:CreateWindow(Config)
     WindowContent.ZIndex = 7
     WindowContent.Font = Enum.Font.GothamBold
     WindowContent.Text = Window.Content
-    WindowContent.TextColor3 = USWARE.AccentColor
+    WindowContent.TextColor3 = RUSWARE.AccentColor
     WindowContent.TextSize = 9
     WindowContent.TextTransparency = 0.350
     WindowContent.TextXAlignment = Enum.TextXAlignment.Left
@@ -443,7 +443,7 @@ function USWARE:CreateWindow(Config)
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0, 5)
     
-    USWARE:AddSignal(UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
+    RUSWARE:AddSignal(UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
         LeftScrollingFrame.CanvasSize = UDim2.fromOffset(0, UIListLayout.AbsoluteContentSize.Y + 1)
     end))
     
@@ -466,7 +466,7 @@ function USWARE:CreateWindow(Config)
     AccountProfile.Position = UDim2.new(0, 10, 0.5, 0)
     AccountProfile.Size = UDim2.new(0, 35, 0, 35)
     AccountProfile.ZIndex = 7
-    AccountProfile.Image = USWARE.UserProfile or ""
+    AccountProfile.Image = RUSWARE.UserProfile or ""
     
     local ProfileCorner = Instance.new("UICorner")
     ProfileCorner.CornerRadius = UDim.new(1, 0)
@@ -497,7 +497,7 @@ function USWARE:CreateWindow(Config)
     ExpireLabel.ZIndex = 7
     ExpireLabel.Font = Enum.Font.GothamBold
     ExpireLabel.Text = "lifetime"
-    ExpireLabel.TextColor3 = USWARE.AccentColor
+    ExpireLabel.TextColor3 = RUSWARE.AccentColor
     ExpireLabel.TextSize = 10
     ExpireLabel.TextTransparency = 0.450
     ExpireLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -518,7 +518,7 @@ function USWARE:CreateWindow(Config)
     local RightMenuFrame = Instance.new("Frame")
     RightMenuFrame.Name = "RightMenu"
     RightMenuFrame.Parent = WindowFrame
-    RightMenuFrame.BackgroundColor3 = USWARE.MainColor
+    RightMenuFrame.BackgroundColor3 = RUSWARE.MainColor
     RightMenuFrame.BackgroundTransparency = 0.600
     RightMenuFrame.BorderSizePixel = 0
     RightMenuFrame.ClipsDescendants = true
@@ -668,58 +668,58 @@ function USWARE:CreateWindow(Config)
     TabContainer.ZIndex = 9
     
     -- Shadow Effect
-    Window.Shadow = USWARE:CreateShadow(WindowFrame)
+    Window.Shadow = RUSWARE:CreateShadow(WindowFrame)
     Window.Shadow:Render(false)
     
     -- Window Render Function
     Window.SetRender = function(self, value)
         if value then
-            USWARE:PlayAnimate(WindowFrame, SlowyTween, {
+            RUSWARE:PlayAnimate(WindowFrame, SlowyTween, {
                 BackgroundTransparency = 0.055,
                 Size = Window.Size
             })
-            USWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 0})
-            USWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 0})
-            USWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 0.350})
-            USWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 0.650})
-            USWARE:PlayAnimate(AccountProfile, SlowyTween, {ImageTransparency = 0})
-            USWARE:PlayAnimate(AccountName, SlowyTween, {TextTransparency = 0})
-            USWARE:PlayAnimate(ExpireLabel, SlowyTween, {TextTransparency = 0.450})
-            USWARE:PlayAnimate(LineFrame2, SlowyTween, {BackgroundTransparency = 0.650})
-            USWARE:PlayAnimate(RightMenuFrame, SlowyTween, {BackgroundTransparency = 0.600})
-            USWARE:PlayAnimate(UIStroke, SlowyTween, {Transparency = 0.650})
-            USWARE:PlayAnimate(LineFrame3, SlowyTween, {BackgroundTransparency = 0.650})
-            USWARE:PlayAnimate(ConfigFrame, SlowyTween, {BackgroundTransparency = 0.750})
-            USWARE:PlayAnimate(ConfigStroke, SlowyTween, {Transparency = 0.650})
-            USWARE:PlayAnimate(ConfigIcon, SlowyTween, {TextTransparency = 0.250})
-            USWARE:PlayAnimate(ConfigLine, SlowyTween, {BackgroundTransparency = 0.650})
-            USWARE:PlayAnimate(ConfigName, SlowyTween, {TextTransparency = 0.350})
-            USWARE:PlayAnimate(ConfigBtnIcon, SlowyTween, {TextTransparency = 0.250})
-            USWARE:PlayAnimate(SearchIcon, SlowyTween, {TextTransparency = 0.45})
+            RUSWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 0})
+            RUSWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 0})
+            RUSWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 0.350})
+            RUSWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 0.650})
+            RUSWARE:PlayAnimate(AccountProfile, SlowyTween, {ImageTransparency = 0})
+            RUSWARE:PlayAnimate(AccountName, SlowyTween, {TextTransparency = 0})
+            RUSWARE:PlayAnimate(ExpireLabel, SlowyTween, {TextTransparency = 0.450})
+            RUSWARE:PlayAnimate(LineFrame2, SlowyTween, {BackgroundTransparency = 0.650})
+            RUSWARE:PlayAnimate(RightMenuFrame, SlowyTween, {BackgroundTransparency = 0.600})
+            RUSWARE:PlayAnimate(UIStroke, SlowyTween, {Transparency = 0.650})
+            RUSWARE:PlayAnimate(LineFrame3, SlowyTween, {BackgroundTransparency = 0.650})
+            RUSWARE:PlayAnimate(ConfigFrame, SlowyTween, {BackgroundTransparency = 0.750})
+            RUSWARE:PlayAnimate(ConfigStroke, SlowyTween, {Transparency = 0.650})
+            RUSWARE:PlayAnimate(ConfigIcon, SlowyTween, {TextTransparency = 0.250})
+            RUSWARE:PlayAnimate(ConfigLine, SlowyTween, {BackgroundTransparency = 0.650})
+            RUSWARE:PlayAnimate(ConfigName, SlowyTween, {TextTransparency = 0.350})
+            RUSWARE:PlayAnimate(ConfigBtnIcon, SlowyTween, {TextTransparency = 0.250})
+            RUSWARE:PlayAnimate(SearchIcon, SlowyTween, {TextTransparency = 0.45})
             Window.Shadow:Render(true)
         else
-            USWARE:PlayAnimate(WindowFrame, SlowyTween, {
+            RUSWARE:PlayAnimate(WindowFrame, SlowyTween, {
                 BackgroundTransparency = 1,
                 Size = Window.Size + UDim2.fromOffset(-15, -15)
             })
-            USWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 1})
-            USWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(AccountProfile, SlowyTween, {ImageTransparency = 1})
-            USWARE:PlayAnimate(AccountName, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(ExpireLabel, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(LineFrame2, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(RightMenuFrame, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(UIStroke, SlowyTween, {Transparency = 1})
-            USWARE:PlayAnimate(LineFrame3, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(ConfigFrame, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(ConfigStroke, SlowyTween, {Transparency = 1})
-            USWARE:PlayAnimate(ConfigIcon, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(ConfigLine, SlowyTween, {BackgroundTransparency = 1})
-            USWARE:PlayAnimate(ConfigName, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(ConfigBtnIcon, SlowyTween, {TextTransparency = 1})
-            USWARE:PlayAnimate(SearchIcon, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(LogoImage, SlowyTween, {ImageTransparency = 1})
+            RUSWARE:PlayAnimate(WindowName, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(WindowContent, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(LineFrame, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(AccountProfile, SlowyTween, {ImageTransparency = 1})
+            RUSWARE:PlayAnimate(AccountName, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(ExpireLabel, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(LineFrame2, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(RightMenuFrame, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(UIStroke, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(LineFrame3, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(ConfigFrame, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(ConfigStroke, SlowyTween, {Transparency = 1})
+            RUSWARE:PlayAnimate(ConfigIcon, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(ConfigLine, SlowyTween, {BackgroundTransparency = 1})
+            RUSWARE:PlayAnimate(ConfigName, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(ConfigBtnIcon, SlowyTween, {TextTransparency = 1})
+            RUSWARE:PlayAnimate(SearchIcon, SlowyTween, {TextTransparency = 1})
             Window.Shadow:Render(false)
         end
     end
@@ -727,13 +727,13 @@ function USWARE:CreateWindow(Config)
     -- Initial Setup
     task.delay(0.25, function()
         Window:SetRender(true)
-        USWARE:AddSignal(Window.Signal:Connect(function(...)
+        RUSWARE:AddSignal(Window.Signal:Connect(function(...)
             Window:SetRender(...)
         end))
     end)
     
     -- Keybind Toggle
-    USWARE:AddSignal(UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    RUSWARE:AddSignal(UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if not gameProcessed and input.KeyCode == Window.Keybind then
             local currentValue = Window.Signal:GetValue()
             Window.Signal:SetValue(not currentValue)
@@ -810,7 +810,7 @@ function USWARE:CreateWindow(Config)
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.ZIndex = 10
         TabContent.ScrollBarThickness = 4
-        TabContent.ScrollBarImageColor3 = USWARE.AccentColor
+        TabContent.ScrollBarImageColor3 = RUSWARE.AccentColor
         TabContent.Visible = false
         
         local ContentLayout = Instance.new("UIListLayout")
@@ -825,34 +825,34 @@ function USWARE:CreateWindow(Config)
         ContentPadding.PaddingRight = UDim.new(0, 10)
         ContentPadding.PaddingBottom = UDim.new(0, 10)
         
-        USWARE:AddSignal(ContentLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
+        RUSWARE:AddSignal(ContentLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
             TabContent.CanvasSize = UDim2.fromOffset(0, ContentLayout.AbsoluteContentSize.Y + 20)
         end))
         
         -- Tab Button Click
         TabButton.MouseButton1Click:Connect(function()
             for _, tab in pairs(Window.Tabs) do
-                USWARE:PlayAnimate(tab.Button, SlowyTween, {BackgroundTransparency = 0.350})
-                USWARE:PlayAnimate(tab.IconLabel, SlowyTween, {TextTransparency = 0.350})
-                USWARE:PlayAnimate(tab.NameLabel, SlowyTween, {TextTransparency = 0.350})
+                RUSWARE:PlayAnimate(tab.Button, SlowyTween, {BackgroundTransparency = 0.350})
+                RUSWARE:PlayAnimate(tab.IconLabel, SlowyTween, {TextTransparency = 0.350})
+                RUSWARE:PlayAnimate(tab.NameLabel, SlowyTween, {TextTransparency = 0.350})
                 tab.Content.Visible = false
             end
             
-            USWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.150})
-            USWARE:PlayAnimate(TabIconLabel, SlowyTween, {TextTransparency = 0})
-            USWARE:PlayAnimate(TabNameLabel, SlowyTween, {TextTransparency = 0})
+            RUSWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.150})
+            RUSWARE:PlayAnimate(TabIconLabel, SlowyTween, {TextTransparency = 0})
+            RUSWARE:PlayAnimate(TabNameLabel, SlowyTween, {TextTransparency = 0})
             TabContent.Visible = true
         end)
         
         -- Hover Effects
         TabButton.MouseEnter:Connect(function()
             if TabContent.Visible then return end
-            USWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.250})
+            RUSWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.250})
         end)
         
         TabButton.MouseLeave:Connect(function()
             if TabContent.Visible then return end
-            USWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.350})
+            RUSWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.350})
         end)
         
         Tab.Button = TabButton
@@ -868,15 +868,15 @@ function USWARE:CreateWindow(Config)
                 task.wait(0.1)
                 -- Manually trigger the click logic
                 for _, tab in pairs(Window.Tabs) do
-                    USWARE:PlayAnimate(tab.Button, SlowyTween, {BackgroundTransparency = 0.350})
-                    USWARE:PlayAnimate(tab.IconLabel, SlowyTween, {TextTransparency = 0.350})
-                    USWARE:PlayAnimate(tab.NameLabel, SlowyTween, {TextTransparency = 0.350})
+                    RUSWARE:PlayAnimate(tab.Button, SlowyTween, {BackgroundTransparency = 0.350})
+                    RUSWARE:PlayAnimate(tab.IconLabel, SlowyTween, {TextTransparency = 0.350})
+                    RUSWARE:PlayAnimate(tab.NameLabel, SlowyTween, {TextTransparency = 0.350})
                     tab.Content.Visible = false
                 end
                 
-                USWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.150})
-                USWARE:PlayAnimate(TabIconLabel, SlowyTween, {TextTransparency = 0})
-                USWARE:PlayAnimate(TabNameLabel, SlowyTween, {TextTransparency = 0})
+                RUSWARE:PlayAnimate(TabButton, SlowyTween, {BackgroundTransparency = 0.150})
+                RUSWARE:PlayAnimate(TabIconLabel, SlowyTween, {TextTransparency = 0})
+                RUSWARE:PlayAnimate(TabNameLabel, SlowyTween, {TextTransparency = 0})
                 TabContent.Visible = true
             end)
         end
@@ -917,7 +917,7 @@ function USWARE:CreateWindow(Config)
             SectionTitle.ZIndex = 12
             SectionTitle.Font = Enum.Font.GothamBold
             SectionTitle.Text = SectionName:upper()
-            SectionTitle.TextColor3 = USWARE.AccentColor
+            SectionTitle.TextColor3 = RUSWARE.AccentColor
             SectionTitle.TextSize = 13
             SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
             
@@ -935,7 +935,7 @@ function USWARE:CreateWindow(Config)
             SectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
             SectionLayout.Padding = UDim.new(0, 8)
             
-            USWARE:AddSignal(SectionLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
+            RUSWARE:AddSignal(SectionLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
                 SectionFrame.Size = UDim2.new(1, -10, 0, SectionLayout.AbsoluteContentSize.Y + 45)
             end))
             
@@ -1004,11 +1004,11 @@ function USWARE:CreateWindow(Config)
                 
                 local function UpdateToggle()
                     if Enabled then
-                        USWARE:PlayAnimate(ToggleButton, SlowyTween, {BackgroundColor3 = USWARE.AccentColor})
-                        USWARE:PlayAnimate(ToggleCircle, SlowyTween, {Position = UDim2.new(1, -10, 0.5, 0)})
+                        RUSWARE:PlayAnimate(ToggleButton, SlowyTween, {BackgroundColor3 = RUSWARE.AccentColor})
+                        RUSWARE:PlayAnimate(ToggleCircle, SlowyTween, {Position = UDim2.new(1, -10, 0.5, 0)})
                     else
-                        USWARE:PlayAnimate(ToggleButton, SlowyTween, {BackgroundColor3 = Color3.fromRGB(20, 25, 35)})
-                        USWARE:PlayAnimate(ToggleCircle, SlowyTween, {Position = UDim2.new(0, 10, 0.5, 0)})
+                        RUSWARE:PlayAnimate(ToggleButton, SlowyTween, {BackgroundColor3 = Color3.fromRGB(20, 25, 35)})
+                        RUSWARE:PlayAnimate(ToggleCircle, SlowyTween, {Position = UDim2.new(0, 10, 0.5, 0)})
                     end
                     Callback(Enabled)
                 end
@@ -1077,7 +1077,7 @@ function USWARE:CreateWindow(Config)
                 SliderValue.ZIndex = 14
                 SliderValue.Font = Enum.Font.GothamBold
                 SliderValue.Text = tostring(Default)
-                SliderValue.TextColor3 = USWARE.AccentColor
+                SliderValue.TextColor3 = RUSWARE.AccentColor
                 SliderValue.TextSize = 13
                 SliderValue.TextXAlignment = Enum.TextXAlignment.Right
                 
@@ -1095,7 +1095,7 @@ function USWARE:CreateWindow(Config)
                 
                 local SliderFill = Instance.new("Frame")
                 SliderFill.Parent = SliderBack
-                SliderFill.BackgroundColor3 = USWARE.AccentColor
+                SliderFill.BackgroundColor3 = RUSWARE.AccentColor
                 SliderFill.BorderSizePixel = 0
                 SliderFill.Size = UDim2.new((Default - Min) / (Max - Min), 0, 1, 0)
                 SliderFill.ZIndex = 15
@@ -1151,7 +1151,7 @@ function USWARE:CreateWindow(Config)
                 local ButtonFrame = Instance.new("TextButton")
                 ButtonFrame.Name = "Button"
                 ButtonFrame.Parent = SectionContent
-                ButtonFrame.BackgroundColor3 = USWARE.AccentColor
+                ButtonFrame.BackgroundColor3 = RUSWARE.AccentColor
                 ButtonFrame.BackgroundTransparency = 0.250
                 ButtonFrame.BorderSizePixel = 0
                 ButtonFrame.Size = UDim2.new(1, 0, 0, 35)
@@ -1171,11 +1171,11 @@ function USWARE:CreateWindow(Config)
                 end)
                 
                 ButtonFrame.MouseEnter:Connect(function()
-                    USWARE:PlayAnimate(ButtonFrame, SlowyTween, {BackgroundTransparency = 0.150})
+                    RUSWARE:PlayAnimate(ButtonFrame, SlowyTween, {BackgroundTransparency = 0.150})
                 end)
                 
                 ButtonFrame.MouseLeave:Connect(function()
-                    USWARE:PlayAnimate(ButtonFrame, SlowyTween, {BackgroundTransparency = 0.250})
+                    RUSWARE:PlayAnimate(ButtonFrame, SlowyTween, {BackgroundTransparency = 0.250})
                 end)
                 
                 return ButtonFrame
@@ -1222,7 +1222,7 @@ function USWARE:CreateWindow(Config)
                 DropdownIcon.ZIndex = 15
                 DropdownIcon.Font = Enum.Font.GothamBold
                 DropdownIcon.Text = "▼"
-                DropdownIcon.TextColor3 = USWARE.AccentColor
+                DropdownIcon.TextColor3 = RUSWARE.AccentColor
                 DropdownIcon.TextSize = 12
                 
                 local DropdownList = Instance.new("Frame")
@@ -1275,11 +1275,11 @@ function USWARE:CreateWindow(Config)
                     end)
                     
                     OptionButton.MouseEnter:Connect(function()
-                        USWARE:PlayAnimate(OptionButton, FastTween, {BackgroundColor3 = USWARE.AccentColor})
+                        RUSWARE:PlayAnimate(OptionButton, FastTween, {BackgroundColor3 = RUSWARE.AccentColor})
                     end)
                     
                     OptionButton.MouseLeave:Connect(function()
-                        USWARE:PlayAnimate(OptionButton, FastTween, {BackgroundColor3 = Color3.fromRGB(20, 23, 30)})
+                        RUSWARE:PlayAnimate(OptionButton, FastTween, {BackgroundColor3 = Color3.fromRGB(20, 23, 30)})
                     end)
                 end
                 
@@ -1304,7 +1304,7 @@ function USWARE:CreateWindow(Config)
                 LabelFrame.ZIndex = 13
                 LabelFrame.Font = Enum.Font.GothamBold
                 LabelFrame.Text = LabelText
-                LabelFrame.TextColor3 = USWARE.AccentColor
+                LabelFrame.TextColor3 = RUSWARE.AccentColor
                 LabelFrame.TextSize = 14
                 LabelFrame.TextXAlignment = Enum.TextXAlignment.Left
                 
@@ -1324,4 +1324,7 @@ function USWARE:CreateWindow(Config)
     return Window
 end
 
-return USWARE
+return RUSWARE
+
+
+
