@@ -5070,7 +5070,7 @@ function RUSWARE:CreateWindow(Config)
 				end;
 			end));
 
-			local Section = RUSWARE:RegisiterHandler(SectionHandler , Tab.Signal);
+			local Section = RUSWARE:RegisiterItem(SectionHandler , Tab.Signal);
 
 			Section.SetRender = LPH_NO_VIRTUALIZE(function(value)
 				if value then
