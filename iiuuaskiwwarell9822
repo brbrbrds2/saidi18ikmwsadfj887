@@ -53,33 +53,42 @@ if getcustomasset then
     
     if not isfolder(dir) then
         makefolder(dir)
+        print("[USWARE] Created assets folder")
     end
     
     -- Load USA Flag
     pcall(function()
         if not isfile(dir..'/'..'usaflag.png') then
+            print("[USWARE] Downloading USA flag...")
             local byte = game:HttpGet(string.format(link, 'usaflag.png'))
             writefile(dir..'/'..'usaflag.png', byte)
+            print("[USWARE] USA flag downloaded!")
             task.wait()
         end
         
         if isfile(dir..'/'..'usaflag.png') then
             USWARE.FlagImage = getcustomasset(dir..'/'..'usaflag.png')
+            print("[USWARE] USA flag loaded:", USWARE.FlagImage)
         end
     end)
     
     -- Load Logo
     pcall(function()
         if not isfile(dir..'/'..'logo.png') then
+            print("[USWARE] Downloading logo...")
             local byte = game:HttpGet(string.format(link, 'logo.png'))
             writefile(dir..'/'..'logo.png', byte)
+            print("[USWARE] Logo downloaded!")
             task.wait()
         end
         
         if isfile(dir..'/'..'logo.png') then
             USWARE.LogoImage = getcustomasset(dir..'/'..'logo.png')
+            print("[USWARE] Logo loaded:", USWARE.LogoImage)
         end
     end)
+else
+    print("[USWARE] getcustomasset not available, using fallback graphics")
 end
 
 -- Safe user profile loading
@@ -123,7 +132,8 @@ function USWARE:CreateSignal(DefaultValue)
     
     function bind:SetValue(f)
         bind.Value = f
-        return cache:Fire(f)
+        cache:Fire(f)
+        return f
     end
     
     function bind:Connect(f)
