@@ -4,22 +4,32 @@
     Press DELETE to toggle
 ]]
 
+-- Compatibility functions
+local cloneref = cloneref or function(obj) return obj end
+local gethui = gethui or get_hidden_gui or function() 
+    return game:GetService("CoreGui")
+end
+
 local USWARE = {}
 
--- Compatibility
-local cloneref = cloneref or function(obj) return obj end
-local gethui = gethui or function() return game:GetService("CoreGui") end
-
 -- Services
-local TweenService = cloneref(game:GetService('TweenService'))
-local UserInputService = cloneref(game:GetService('UserInputService'))
-local TextService = cloneref(game:GetService('TextService'))
-local RunService = cloneref(game:GetService('RunService'))
-local Players = cloneref(game:GetService('Players'))
-local HttpService = cloneref(game:GetService('HttpService'))
+local TweenService = game:GetService('TweenService')
+local UserInputService = game:GetService('UserInputService')
+local TextService = game:GetService('TextService')
+local RunService = game:GetService('RunService')
+local Players = game:GetService('Players')
+local HttpService = game:GetService('HttpService')
 local LocalPlayer = Players.LocalPlayer
-local CoreGui = gethui()
 local Mouse = LocalPlayer:GetMouse()
+
+-- Get CoreGui safely
+local CoreGui
+pcall(function()
+    CoreGui = gethui()
+end)
+if not CoreGui then
+    CoreGui = game:GetService("CoreGui")
+end
 
 -- Global Variables
 USWARE.GlobalSignals = {}
