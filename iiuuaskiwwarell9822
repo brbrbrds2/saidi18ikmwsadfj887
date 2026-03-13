@@ -285,34 +285,24 @@ function RUSWARE:CreateWindow(Config)
         FlagImage.Visible = false
     end
     
-    -- Create 13 Stripes
-    for i = 1, 13 do
+    -- Create Russian Flag Stripes (White-Blue-Red)
+    local RussianStripes = {
+        {Color = Color3.fromRGB(255, 255, 255), Position = 0},    -- White
+        {Color = Color3.fromRGB(0, 57, 166), Position = 1/3},     -- Blue
+        {Color = Color3.fromRGB(213, 43, 30), Position = 2/3}     -- Red
+    }
+    
+    for i, stripe in ipairs(RussianStripes) do
         local Stripe = Instance.new("Frame")
-        Stripe.Name = "Stripe" .. i
+        Stripe.Name = "RussianStripe" .. i
         Stripe.Parent = FlagContainer
         Stripe.BorderSizePixel = 0
-        Stripe.Size = UDim2.new(1, 0, 1/13, 0)
-        Stripe.Position = UDim2.new(0, 0, (i-1)/13, 0)
+        Stripe.Size = UDim2.new(1, 0, 1/3, 0)
+        Stripe.Position = UDim2.new(0, 0, stripe.Position, 0)
         Stripe.ZIndex = 1
-        
-        if i % 2 == 1 then
-            Stripe.BackgroundColor3 = Color3.fromRGB(178, 34, 52) -- Red
-        else
-            Stripe.BackgroundColor3 = Color3.fromRGB(240, 240, 240) -- White
-        end
+        Stripe.BackgroundColor3 = stripe.Color
         Stripe.BackgroundTransparency = 0.92
     end
-    
-    -- Blue Canton (Stars Area)
-    local Canton = Instance.new("Frame")
-    Canton.Name = "Canton"
-    Canton.Parent = FlagContainer
-    Canton.BackgroundColor3 = Color3.fromRGB(60, 59, 110) -- Blue
-    Canton.BackgroundTransparency = 0.9
-    Canton.BorderSizePixel = 0
-    Canton.Size = UDim2.new(0.4, 0, 7/13, 0)
-    Canton.Position = UDim2.new(0, 0, 0, 0)
-    Canton.ZIndex = 2
     
     -- Drag Frame
     local DragFrame = Instance.new("Frame")
@@ -358,7 +348,7 @@ function RUSWARE:CreateWindow(Config)
     LogoFrame.Name = "LogoFallback"
     LogoFrame.Parent = HeadFrame
     LogoFrame.AnchorPoint = Vector2.new(0, 0.5)
-    LogoFrame.BackgroundColor3 = Color3.fromRGB(60, 59, 110)
+    LogoFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background for Russian flag
     LogoFrame.Position = UDim2.new(0, 10, 0.5, 0)
     LogoFrame.Size = UDim2.new(0, 35, 0, 35)
     LogoFrame.ZIndex = 6
@@ -368,19 +358,21 @@ function RUSWARE:CreateWindow(Config)
     LogoFrameCorner.CornerRadius = UDim.new(0, 7)
     LogoFrameCorner.Parent = LogoFrame
     
-    -- Mini flag stripes for fallback logo
-    for i = 1, 5 do
+    -- Mini Russian flag for fallback logo (White-Blue-Red)
+    local MiniRussianStripes = {
+        {Color = Color3.fromRGB(255, 255, 255), Start = 0, End = 1/3},      -- White
+        {Color = Color3.fromRGB(0, 57, 166), Start = 1/3, End = 2/3},       -- Blue
+        {Color = Color3.fromRGB(213, 43, 30), Start = 2/3, End = 1}         -- Red
+    }
+    
+    for i, stripe in ipairs(MiniRussianStripes) do
         local MiniStripe = Instance.new("Frame")
         MiniStripe.Parent = LogoFrame
         MiniStripe.BorderSizePixel = 0
-        MiniStripe.Size = UDim2.new(1, 0, 0.2, 0)
-        MiniStripe.Position = UDim2.new(0, 0, (i-1) * 0.2, 0)
+        MiniStripe.Size = UDim2.new(1, 0, 1/3, 0)
+        MiniStripe.Position = UDim2.new(0, 0, stripe.Start, 0)
         MiniStripe.ZIndex = 8
-        if i % 2 == 1 then
-            MiniStripe.BackgroundColor3 = Color3.fromRGB(178, 34, 52)
-        else
-            MiniStripe.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        end
+        MiniStripe.BackgroundColor3 = stripe.Color
     end
     
     -- Window Name
