@@ -290,8 +290,7 @@ function USWARE:CreateWindow(Config)
         MiniStripe.Position = UDim2.new(0, 0, (i-1) * 0.2, 0)
         MiniStripe.ZIndex = 8
         if i % 2 == 1 then
-            MiniStripe.B
-ackgroundColor3 = Color3.fromRGB(178, 34, 52)
+            MiniStripe.BackgroundColor3 = Color3.fromRGB(178, 34, 52)
         else
             MiniStripe.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         end
